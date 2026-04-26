@@ -236,7 +236,7 @@ function Home() {
   const [newsError, setNewsError] = useState(null);
 
   useEffect(() => {
-    fetch('${API_URL}/api/currency')
+    fetch(`${API_URL}/api/currency`)
       .then((r) => r.json())
       .then((d) => setRates(d.rates))
       .catch(console.error);
