@@ -4,7 +4,9 @@ import "dotenv/config";
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:5173", https://currency-exchange-office-1.onrender.com }));
+app.use(cors({ origin: "http://localhost:5173", process.env.FRONTEND_URL  }));
+ }));
+ }));
 app.use(express.json());
 
 app.get("/", (req, res) => {
