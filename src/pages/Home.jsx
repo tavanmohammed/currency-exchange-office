@@ -6,7 +6,7 @@ import InquiryForm from '../components/InquiryForm';
 import SendMoneyForm from '../components/SendMoneyForm';
 import Footer from '../components/Footer';
 
-const API_URL = import.meta.env.VITE_API_URL;
+
 
 function StatCard({ value, label, sub }) {
   return (
@@ -227,6 +227,8 @@ function RatesBlock({ title, badge, currencies, rates }) {
 function Home() {
   const { t } = useTranslation();
 
+  const API_URL = import.meta.env.VIT_API_URL;
+  
   const [amount, setAmount] = useState(1);
   const [from, setFrom] = useState('USD');
   const [to, setTo] = useState('IQD');
