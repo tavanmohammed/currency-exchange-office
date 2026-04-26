@@ -227,7 +227,7 @@ function RatesBlock({ title, badge, currencies, rates }) {
 function Home() {
   const { t } = useTranslation();
 
-  const API_URL = import.meta.env.VIT_API_URL;
+  const API_URL = import.meta.env.VITE_API_URL;
   
   const [amount, setAmount] = useState(1);
   const [from, setFrom] = useState('USD');
