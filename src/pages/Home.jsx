@@ -6,6 +6,8 @@ import InquiryForm from '../components/InquiryForm';
 import SendMoneyForm from '../components/SendMoneyForm';
 import Footer from '../components/Footer';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function StatCard({ value, label, sub }) {
   return (
     <div className="relative overflow-hidden bg-gradient-to-br from-amber-400 to-yellow-600 rounded-3xl p-8 text-black shadow-2xl">
