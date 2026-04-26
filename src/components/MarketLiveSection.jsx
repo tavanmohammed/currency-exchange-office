@@ -14,7 +14,7 @@ function MarketLiveSection() {
   const [lastUpdated, setLastUpdated] = useState(null);
 
   const fetchLiveData = () => {
-    fetch('http://localhost:5000/api/currency')
+    fetch('${API_URL}/api/currency')
       .then((res) => res.json())
       .then((data) => {
         setRates(data.rates);
