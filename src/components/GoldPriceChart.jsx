@@ -17,7 +17,7 @@ function GoldPriceChart() {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
-    fetch('${API_URL}/api/metals')
+    fetch(`${API_URL}/api/metals`)
       .then((res) => res.json())
       .then((data) => {
         const gold = data.rates?.XAU || 2350.75;
