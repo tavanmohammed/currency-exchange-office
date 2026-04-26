@@ -5,17 +5,22 @@ import emailjs from '@emailjs/browser';
 function SendMoneyForm() {
   const { t } = useTranslation();
 
-  const [form, setForm] = useState({
+  const emptyForm = {
     sender: '',
+    senderPhone: '',
+    senderEmail: '',
     receiver: '',
+    receiverPhone: '',
+    receiverEmail: '',
     country: '',
     city: '',
     amount: '',
     paymentMethod: '',
     deliveryMethod: '',
     date: '',
-  });
+  };
 
+  const [form, setForm] = useState(emptyForm);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -23,6 +28,12 @@ function SendMoneyForm() {
   const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
   const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_SEND_MONEY_TEMPLATE_ID;
   const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+  const inputClass =
+    'w-full bg-white/10 border border-white/20 focus:border-amber-400 text-white placeholder-white/30 p-3 rounded-xl outline-none transition';
+
+  const labelClass =
+    'text-white/50 text-xs font-semibold uppercase tracking-widest block mb-1.5';
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -39,7 +50,11 @@ function SendMoneyForm() {
         TEMPLATE_ID,
         {
           sender: form.sender,
+          senderPhone: form.senderPhone,
+          senderEmail: form.senderEmail,
           receiver: form.receiver,
+          receiverPhone: form.receiverPhone,
+          receiverEmail: form.receiverEmail,
           country: form.country,
           city: form.city,
           amount: form.amount,
@@ -51,16 +66,7 @@ function SendMoneyForm() {
       );
 
       setSubmitted(true);
-      setForm({
-        sender: '',
-        receiver: '',
-        country: '',
-        city: '',
-        amount: '',
-        paymentMethod: '',
-        deliveryMethod: '',
-        date: '',
-      });
+      setForm(emptyForm);
     } catch (err) {
       console.error(err);
       setError('Failed to send request. Please try again.');
@@ -68,12 +74,6 @@ function SendMoneyForm() {
       setLoading(false);
     }
   };
-
-  const inputClass =
-    'w-full bg-white/10 border border-white/20 focus:border-amber-400 text-white placeholder-white/30 p-3 rounded-xl outline-none transition';
-
-  const labelClass =
-    'text-white/50 text-xs font-semibold uppercase tracking-widest block mb-1.5';
 
   return (
     <div className="bg-gradient-to-br from-[#08164a] to-[#0d1f63] rounded-3xl p-8 md:p-10">
@@ -116,35 +116,100 @@ function SendMoneyForm() {
           </button>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div>
-              <label className={labelClass}>{t('senderName')} *</label>
-              <input
-                type="text"
-                name="sender"
-                value={form.sender}
-                onChange={handleChange}
-                required
-                placeholder="Full name"
-                className={inputClass}
-              />
-            </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Sender Info */}
+          <div>
+            <h3 className="text-white font-bold mb-3">Sender Information</h3>
 
-            <div>
-              <label className={labelClass}>{t('receiverName')} *</label>
-              <input
-                type="text"
-                name="receiver"
-                value={form.receiver}
-                onChange={handleChange}
-                required
-                placeholder="Full name"
-                className={inputClass}
-              />
+            <div className="grid md:grid-cols-3 gap-4">
+              <div>
+                <label className={labelClass}>Sender Name *</label>
+                <input
+                  type="text"
+                  name="sender"
+                  value={form.sender}
+                  onChange={handleChange}
+                  required
+                  placeholder="Full name"
+                  className={inputClass}
+                />
+              </div>
+
+              <div>
+                <label className={labelClass}>Sender Phone *</label>
+                <input
+                  type="tel"
+                  name="senderPhone"
+                  value={form.senderPhone}
+                  onChange={handleChange}
+                  required
+                  placeholder="+1 000 000 0000"
+                  className={inputClass}
+                />
+              </div>
+
+              <div>
+                <label className={labelClass}>Sender Email *</label>
+                <input
+                  type="email"
+                  name="senderEmail"
+                  value={form.senderEmail}
+                  onChange={handleChange}
+                  required
+                  placeholder="sender@email.com"
+                  className={inputClass}
+                />
+              </div>
             </div>
           </div>
 
+          {/* Receiver Info */}
+          <div>
+            <h3 className="text-white font-bold mb-3">Receiver Information</h3>
+
+            <div className="grid md:grid-cols-3 gap-4">
+              <div>
+                <label className={labelClass}>Receiver Name *</label>
+                <input
+                  type="text"
+                  name="receiver"
+                  value={form.receiver}
+                  onChange={handleChange}
+                  required
+                  placeholder="Full name"
+                  className={inputClass}
+                />
+              </div>
+
+              <div>
+                <label className={labelClass}>Receiver Phone *</label>
+                <input
+                  type="tel"
+                  name="receiverPhone"
+                  value={form.receiverPhone}
+                  onChange={handleChange}
+                  required
+                  placeholder="+964 000 000 0000"
+                  className={inputClass}
+                />
+              </div>
+
+              <div>
+                <label className={labelClass}>Receiver Email *</label>
+                <input
+                  type="email"
+                  name="receiverEmail"
+                  value={form.receiverEmail}
+                  onChange={handleChange}
+                  required
+                  placeholder="receiver@email.com"
+                  className={inputClass}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Location */}
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>{t('country')} *</label>
@@ -173,8 +238,10 @@ function SendMoneyForm() {
             </div>
           </div>
 
+          {/* Amount */}
           <div>
             <label className={labelClass}>{t('amount')} (USD) *</label>
+
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-400 font-black text-lg">
                 $
@@ -193,6 +260,7 @@ function SendMoneyForm() {
             </div>
           </div>
 
+          {/* Methods */}
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>{t('paymentMethod')} *</label>
@@ -221,6 +289,7 @@ function SendMoneyForm() {
             </div>
           </div>
 
+          {/* Date */}
           <div>
             <label className={labelClass}>Transfer Date *</label>
             <input
