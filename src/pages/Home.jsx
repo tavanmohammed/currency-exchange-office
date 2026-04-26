@@ -234,14 +234,14 @@ function Home() {
   const [newsError, setNewsError] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/currency')
+    fetch('${API_URL}/api/currency')
       .then((r) => r.json())
       .then((d) => setRates(d.rates))
       .catch(console.error);
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/convert?from=${from}&to=${to}&amount=${amount}`)
+    fetch(`${API_URL}/api/convert?from=${from}&to=${to}&amount=${amount}`)
       .then((r) => r.json())
       .then(setConverted)
       .catch(console.error);
