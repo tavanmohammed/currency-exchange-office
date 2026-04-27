@@ -11,7 +11,8 @@ function Navbar() {
 
   return (
     <header className="bg-white border-b sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-1 md:px-4 py-3 flex items-center justify-between">
+         <Link to="/" className="flex items-center gap-1 -ml-3 md:ml-0" onClick={closeMenu}>
         
         {/* LEFT LOGO */}
         <Link to="/" className="flex items-center gap-3" onClick={closeMenu}>
@@ -21,10 +22,9 @@ function Navbar() {
             className="h-60 w-auto object-contain"
           />
 
-         
-           <p className="text-xs text-gray-500 font-medium tracking-wide text-left md:text-center ml-0 md:ml-0 pr-2 md:pr-0">
-            Transfer & Exchange Currency
-          </p>
+          <p className="text-xs text-gray-500 font-medium tracking-wide text-left whitespace-nowrap">
+             Transfer & Exchange Currency
+         </p>
           
         </Link>
 
