@@ -17,14 +17,21 @@ function MarketLiveSection() {
   const [lastUpdated, setLastUpdated] = useState(null);
 
   const fetchLiveData = () => {
-    fetch(`${API_URL}/api/currency`)
-      .then((res) => res.json())
-      .then((data) => {
-        setRates(data.rates);
-        setLastUpdated(new Date().toLocaleTimeString());
-      })
-      .catch((err) => console.log(err));
-  };
+  fetch(`${API_URL}/api/currency`)
+    .then((res) => {
+      if (!res.ok) throw new Error("API failed");
+      return res.json();
+    })
+    .then((data) => {
+      console.log("LIVE DATA:", data);
+      setRates(data.rates || {});
+      setLastUpdated(new Date().toLocaleTimeString());
+    })
+    .catch((err) => {
+      console.error("Fetch error:", err);
+      setRates({});
+    });
+};
 
   useEffect(() => {
     fetchLiveData();
@@ -37,7 +44,7 @@ function MarketLiveSection() {
   const makeLiveChart = (value) => {
     const numberValue = Number(value);
 
-    if (!numberValue || Number.isNaN(numberValue)) return [];
+    if (!Number.isFinite(numberValue)) return [];
 
     return [
       { time: '09:00', value: numberValue * 0.996 },
@@ -51,8 +58,8 @@ function MarketLiveSection() {
   };
 
   const MarketCard = ({ title, subtitle, value, symbol, gradientId }) => {
-    const numberValue = Number(value);
-    const isValid = !Number.isNaN(numberValue) && numberValue > 0;
+  const numberValue = Number(value);
+  const isValid = !Number.isNaN(numberValue) && numberValue > 0;
 
     const chartData = makeLiveChart(numberValue);
     const first = chartData[0]?.value;
@@ -130,7 +137,7 @@ function MarketLiveSection() {
     );
   };
 
-  const MainGraph = ({ title, subtitle, value, symbol, gradientId }) => {
+    const MainGraph = ({ title, subtitle, value, symbol, gradientId }) => {
     const numberValue = Number(value);
     const isValid = !Number.isNaN(numberValue) && numberValue > 0;
     const chartData = makeLiveChart(numberValue);
