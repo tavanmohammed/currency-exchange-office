@@ -36,7 +36,10 @@ function SendMoneyForm() {
     'text-white/50 text-xs font-semibold uppercase tracking-widest block mb-1.5';
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -76,7 +79,7 @@ function SendMoneyForm() {
       setSubmitted(true);
       setForm(emptyForm);
     } catch (err) {
-      console.error(err);
+      console.error('EmailJS error:', err);
       setError('Failed to send request. Please try again.');
     } finally {
       setLoading(false);
