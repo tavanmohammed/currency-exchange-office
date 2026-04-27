@@ -11,21 +11,23 @@ function Navbar() {
 
   return (
     <header className="bg-white border-b sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-1 md:px-4 py-3 flex items-center justify-between">
-         <Link to="/" className="flex items-center gap-1 -ml-3 md:ml-0" onClick={closeMenu}>
-        
-        {/* LEFT LOGO */}
-        <Link to="/" className="flex items-center gap-3" onClick={closeMenu}>
+      <div className="max-w-6xl mx-auto px-1 md:px-4 py-3 flex items-center justify-between">
+
+        {/* LEFT: LOGO + TEXT */}
+        <Link
+          to="/"
+          onClick={closeMenu}
+          className="flex items-center gap-2 -ml-2 md:ml-0"
+        >
           <img
             src="/logo.png"
             alt="Shabakt Naqdia Logo"
-            className="h-60 w-auto object-contain"
+            className="h-14 md:h-16 w-auto object-contain"
           />
 
           <p className="text-xs text-gray-500 font-medium tracking-wide text-left whitespace-nowrap">
-             Transfer & Exchange Currency
-         </p>
-          
+            Transfer & Exchange Currency
+          </p>
         </Link>
 
         {/* DESKTOP NAV */}
