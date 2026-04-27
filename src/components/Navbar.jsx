@@ -22,9 +22,9 @@ function Navbar() {
           />
 
          
-         <p className="text-xs text-gray-500 font-medium tracking-wide -ml-2">
-  Transfer & Exchange Currency
-</p>
+           <p className="text-xs text-gray-500 font-medium tracking-wide text-left md:text-center ml-0 md:ml-0 pr-2 md:pr-0">
+            Transfer & Exchange Currency
+          </p>
           
         </Link>
 
