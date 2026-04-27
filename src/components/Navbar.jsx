@@ -22,9 +22,10 @@ function Navbar() {
           />
 
          
-<p className="text-xs text-gray-500 font-medium tracking-wide">
+         <p className="text-xs text-gray-500 font-medium tracking-wide -ml-2">
   Transfer & Exchange Currency
 </p>
+          
         </Link>
 
         {/* DESKTOP NAV */}
