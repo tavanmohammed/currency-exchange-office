@@ -44,50 +44,32 @@ function SendMoneyForm() {
     setLoading(true);
     setError(null);
 
+    const templateParams = {
+      sender_name: form.sender,
+      sender_phone: form.senderPhone,
+      sender_email: form.senderEmail,
+
+      receiver_name: form.receiver,
+      receiver_phone: form.receiverPhone,
+      receiver_email: form.receiverEmail,
+
+      country: form.country,
+      city: form.city,
+      amount: form.amount,
+
+      send_method: form.paymentMethod,
+      delivery_method: form.deliveryMethod,
+
+      message: `Transfer Date: ${form.date}`,
+    };
+
+    console.log('EMAILJS PARAMS:', templateParams);
+
     try {
       await emailjs.send(
         SERVICE_ID,
         TEMPLATE_ID,
-        {
-          
-  const templateParams = {
-  sender_name: form.sender,
-  sender_phone: form.senderPhone,
-  sender_email: form.senderEmail,
-
-  receiver_name: form.receiver,
-  receiver_phone: form.receiverPhone,
-  receiver_email: form.receiverEmail,
-
-  country: form.country,
-  city: form.city,
-  amount: form.amount,
-
-  send_method: form.paymentMethod,
-  delivery_method: form.deliveryMethod,
-
-  message: `Transfer Date: ${form.date}`,
-};
-
-console.log("EMAILJS PARAMS:", templateParams);
-
-await emailjs.send(
-  SERVICE_ID,
-  TEMPLATE_ID,
-  templateParams,
-  PUBLIC_KEY
-);
-
-console.log("EMAILJS PARAMS:", templateParams);
-
-await emailjs.send(
-  SERVICE_ID,
-  TEMPLATE_ID,
-  templateParams,
-  PUBLIC_KEY
-);
-},
-        
+        templateParams,
         PUBLIC_KEY
       );
 
@@ -143,7 +125,6 @@ await emailjs.send(
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Sender Info */}
           <div>
             <h3 className="text-white font-bold mb-3">Sender Information</h3>
 
@@ -189,7 +170,6 @@ await emailjs.send(
             </div>
           </div>
 
-          {/* Receiver Info */}
           <div>
             <h3 className="text-white font-bold mb-3">Receiver Information</h3>
 
@@ -235,7 +215,6 @@ await emailjs.send(
             </div>
           </div>
 
-          {/* Location */}
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>{t('country')} *</label>
@@ -264,7 +243,6 @@ await emailjs.send(
             </div>
           </div>
 
-          {/* Amount */}
           <div>
             <label className={labelClass}>{t('amount')} (USD) *</label>
 
@@ -286,7 +264,6 @@ await emailjs.send(
             </div>
           </div>
 
-          {/* Methods */}
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>{t('paymentMethod')} *</label>
@@ -315,7 +292,6 @@ await emailjs.send(
             </div>
           </div>
 
-          {/* Date */}
           <div>
             <label className={labelClass}>Transfer Date *</label>
             <input
