@@ -49,21 +49,36 @@ function SendMoneyForm() {
         SERVICE_ID,
         TEMPLATE_ID,
         {
-          {
-  sender: form.sender,
-  senderPhone: form.senderPhone,
-  senderEmail: form.senderEmail,
-  receiver: form.receiver,
-  receiverPhone: form.receiverPhone,
-  receiverEmail: form.receiverEmail,
+          
+  const templateParams = {
+  sender_name: form.sender,
+  sender_phone: form.senderPhone,
+  sender_email: form.senderEmail,
+
+  receiver_name: form.receiver,
+  receiver_phone: form.receiverPhone,
+  receiver_email: form.receiverEmail,
+
   country: form.country,
   city: form.city,
   amount: form.amount,
-  paymentMethod: form.paymentMethod,
-  deliveryMethod: form.deliveryMethod,
-  date: form.date,
-}
-        },
+
+  send_method: form.paymentMethod,
+  delivery_method: form.deliveryMethod,
+
+  message: `Transfer Date: ${form.date}`,
+};
+
+console.log("EMAILJS PARAMS:", templateParams);
+
+await emailjs.send(
+  SERVICE_ID,
+  TEMPLATE_ID,
+  templateParams,
+  PUBLIC_KEY
+);
+},
+        
         PUBLIC_KEY
       );
 
