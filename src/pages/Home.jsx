@@ -215,18 +215,22 @@ export default function Home() {
   const [news, setNews]         = useState(null);
 
   useEffect(() => {
-    fetch(`${API_URL}/api/currency`)
-      .then(r => r.json())
-      .then(d => setRates(d.rates))
-      .catch(console.error);
-  }, []);
+  if (!amount || Number(amount) <= 0) return;
 
-  useEffect(() => {
-    fetch(`${API_URL}/api/convert?from=${from}&to=${to}&amount=${amount}`)
-      .then(r => r.json())
-      .then(setConverted)
-      .catch(console.error);
-  }, [amount, from, to]);
+  fetch(`${API_URL}/api/convert?from=${from}&to=${to}&amount=${amount}`)
+    .then((r) => {
+      if (!r.ok) throw new Error("Failed to convert currency");
+      return r.json();
+    })
+    .then((data) => {
+      console.log("Converted data:", data);
+      setConverted(data);
+    })
+    .catch((err) => {
+      console.error("Convert fetch error:", err);
+      setConverted(null);
+    });
+}, [amount, from, to]);
 
   useEffect(() => {
     setNews([
