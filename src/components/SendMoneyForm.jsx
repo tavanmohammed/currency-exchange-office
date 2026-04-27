@@ -49,18 +49,20 @@ function SendMoneyForm() {
         SERVICE_ID,
         TEMPLATE_ID,
         {
-          sender: form.sender,
-          senderPhone: form.senderPhone,
-          senderEmail: form.senderEmail,
-          receiver: form.receiver,
-          receiverPhone: form.receiverPhone,
-          receiverEmail: form.receiverEmail,
-          country: form.country,
-          city: form.city,
-          amount: form.amount,
-          paymentMethod: form.paymentMethod,
-          deliveryMethod: form.deliveryMethod,
-          date: form.date,
+          {
+  sender: form.sender,
+  senderPhone: form.senderPhone,
+  senderEmail: form.senderEmail,
+  receiver: form.receiver,
+  receiverPhone: form.receiverPhone,
+  receiverEmail: form.receiverEmail,
+  country: form.country,
+  city: form.city,
+  amount: form.amount,
+  paymentMethod: form.paymentMethod,
+  deliveryMethod: form.deliveryMethod,
+  date: form.date,
+}
         },
         PUBLIC_KEY
       );
