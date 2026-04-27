@@ -113,14 +113,17 @@ function TrustPillar({ num, icon, title, body }) {
 /* ─── RateRow ────────────────────────────────────────────── */
 function RateRow({ code, label, rates }) {
   const val = code === 'USD' ? 1 : rates?.[code];
+  const numberVal = Number(val);
+
   return (
     <div className="flex justify-between items-center py-3 px-4 rounded-xl hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-0 group cursor-default">
       <div>
         <p className="font-semibold text-slate-800 text-sm">{label}</p>
         <p className="text-slate-400 text-xs mt-0.5 font-mono">{code}</p>
       </div>
+
       <p className="font-black text-slate-900 text-base font-mono group-hover:text-amber-600 transition-colors">
-        {val != null ? val.toFixed(4) : <span className="text-slate-300 animate-pulse">··</span>}
+        {Number.isFinite(numberVal) ? numberVal.toFixed(4) : 'N/A'}
       </p>
     </div>
   );
