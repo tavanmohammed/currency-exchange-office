@@ -97,8 +97,8 @@ function MarketLiveSection() {
           <span className="text-white/40 text-sm">Today</span>
         </div>
 
-        <div className="h-48">
-          <ResponsiveContainer width="100%" height="100%">
+        <div className="w-full h-48 min-w-0">
+        <ResponsiveContainer width="100%" height={192}>
             <AreaChart data={chartData}>
               <defs>
                 <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
@@ -161,8 +161,8 @@ function MarketLiveSection() {
           </div>
         </div>
 
-        <div className="h-72">
-          <ResponsiveContainer width="100%" height="100%">
+        <div className="w-full h-72 min-w-0">
+        <ResponsiveContainer width="100%" height={288}>
             <AreaChart data={chartData}>
               <defs>
                 <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
