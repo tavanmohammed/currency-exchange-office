@@ -9,6 +9,9 @@ import {
   CartesianGrid,
 } from 'recharts';
 
+const API_URL =
+  import.meta.env.VITE_API_URL || "https://currency-exchange-office.onrender.com";
+
 function MarketLiveSection() {
   const [rates, setRates] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
