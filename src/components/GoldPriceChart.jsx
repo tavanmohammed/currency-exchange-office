@@ -10,6 +10,9 @@ import {
 } from 'recharts';
 import { useTranslation } from 'react-i18next';
 
+const API_URL =
+  import.meta.env.VITE_API_URL || "https://currency-exchange-office.onrender.com";
+
 function GoldPriceChart() {
   const { t } = useTranslation();
   const [goldPrice, setGoldPrice] = useState(null);
