@@ -34,11 +34,11 @@ const allCurrencies = [
 ];
 const PREVIEW_COUNT = 10;
 
-/* ─── tiny helpers ───────────────────────────────────────── */
+/* ─── helpers ────────────────────────────────────────────── */
 function Tag({ children, color = 'gold' }) {
   const palettes = {
     gold:  'bg-amber-400/15 text-amber-500 border border-amber-400/30',
-    blue:  'bg-sky-400/10  text-sky-400  border border-sky-400/20',
+    blue:  'bg-sky-400/10 text-sky-400 border border-sky-400/20',
     green: 'bg-emerald-400/10 text-emerald-400 border border-emerald-400/20',
   };
   return (
@@ -52,12 +52,32 @@ function useInView(threshold = 0.15) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold });
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold }
+    );
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, []);
   return [ref, visible];
 }
+
+/* Inline-style animation helpers — avoids Tailwind JIT purging dynamic classes */
+const fadeUp = (vis, delay = 0) => ({
+  transition: `opacity 0.7s ease ${delay}ms, transform 0.7s ease ${delay}ms`,
+  opacity: vis ? 1 : 0,
+  transform: vis ? 'translateY(0)' : 'translateY(2rem)',
+});
+const fadeLeft = (vis, delay = 0) => ({
+  transition: `opacity 0.7s ease ${delay}ms, transform 0.7s ease ${delay}ms`,
+  opacity: vis ? 1 : 0,
+  transform: vis ? 'translateX(0)' : 'translateX(-2rem)',
+});
+const fadeRight = (vis, delay = 0) => ({
+  transition: `opacity 0.7s ease ${delay}ms, transform 0.7s ease ${delay}ms`,
+  opacity: vis ? 1 : 0,
+  transform: vis ? 'translateX(0)' : 'translateX(2rem)',
+});
 
 /* ─── CurrencyTicker ─────────────────────────────────────── */
 function CurrencyTicker({ rates }) {
@@ -66,7 +86,7 @@ function CurrencyTicker({ rates }) {
   const doubled = [...items, ...items];
   return (
     <div className="overflow-hidden bg-amber-400 text-black text-xs font-bold py-2">
-      <div className="flex gap-8 animate-ticker whitespace-nowrap">
+      <div className="flex gap-8 whitespace-nowrap animate-ticker">
         {doubled.map((t, i) => (
           <span key={i} className="shrink-0 tracking-wider">
             {t} <span className="opacity-40 mx-2">|</span>
@@ -79,15 +99,14 @@ function CurrencyTicker({ rates }) {
 
 /* ─── LiveRateCard ───────────────────────────────────────── */
 function LiveRateCard({ name, code, flag, rate }) {
-  const loaded = rate != null;
   return (
-    <div className="group relative overflow-hidden border border-white/8 rounded-2xl p-6 bg-white/[0.03] hover:bg-white/[0.07] transition-all duration-500 cursor-default">
+    <div className="group relative overflow-hidden border border-white/10 rounded-2xl p-6 bg-white/[0.03] hover:bg-white/[0.07] transition-all duration-500 cursor-default">
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
            style={{ background: 'radial-gradient(circle at 60% 40%, rgba(251,191,36,0.07) 0%, transparent 70%)' }} />
       <div className="text-3xl mb-3">{flag}</div>
       <p className="text-white/40 text-[11px] font-semibold uppercase tracking-widest mb-1">{name}</p>
       <p className="text-3xl font-black text-white leading-none">
-        {loaded
+        {rate != null
           ? rate.toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 })
           : <span className="text-white/20 text-2xl animate-pulse">···</span>}
       </p>
@@ -100,12 +119,13 @@ function LiveRateCard({ name, code, flag, rate }) {
 function TrustPillar({ num, icon, title, body }) {
   const [ref, vis] = useInView();
   return (
-    <div ref={ref} className={`transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-         style={{ transitionDelay: `${num * 120}ms` }}>
-      <div className="text-amber-400/30 font-black text-6xl leading-none select-none mb-4">{String(num).padStart(2,'0')}</div>
+    <div ref={ref} style={fadeUp(vis, num * 120)}>
+      <div className="text-amber-400/30 font-black text-6xl leading-none select-none mb-4">
+        {String(num).padStart(2, '0')}
+      </div>
       <div className="text-4xl mb-3">{icon}</div>
       <h3 className="text-white font-bold text-lg mb-2">{title}</h3>
-      <p className="text-white/45 text-sm leading-7">{body}</p>
+      <p className="text-white/50 text-sm leading-7">{body}</p>
     </div>
   );
 }
@@ -113,17 +133,15 @@ function TrustPillar({ num, icon, title, body }) {
 /* ─── RateRow ────────────────────────────────────────────── */
 function RateRow({ code, label, rates }) {
   const val = code === 'USD' ? 1 : rates?.[code];
-  const numberVal = Number(val);
-
+  const n = Number(val);
   return (
     <div className="flex justify-between items-center py-3 px-4 rounded-xl hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-0 group cursor-default">
       <div>
         <p className="font-semibold text-slate-800 text-sm">{label}</p>
         <p className="text-slate-400 text-xs mt-0.5 font-mono">{code}</p>
       </div>
-
       <p className="font-black text-slate-900 text-base font-mono group-hover:text-amber-600 transition-colors">
-        {Number.isFinite(numberVal) ? numberVal.toFixed(4) : 'N/A'}
+        {Number.isFinite(n) ? n.toFixed(4) : 'N/A'}
       </p>
     </div>
   );
@@ -163,12 +181,12 @@ function NewsCard({ article, index }) {
     : '';
   return (
     <a ref={ref} href={article.url} target="_blank" rel="noopener noreferrer"
-      className={`group flex flex-col bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 overflow-hidden
-                  ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-      style={{ transitionDelay: `${index * 100}ms` }}>
+       className="group flex flex-col bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-shadow duration-300 overflow-hidden"
+       style={fadeUp(vis, index * 100)}>
       <div className="h-44 overflow-hidden bg-gradient-to-br from-[#08164a] to-[#0d1f63] flex items-center justify-center">
         {article.image_url
-          ? <img src={article.image_url} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          ? <img src={article.image_url} alt={article.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               onError={e => { e.target.parentElement.innerHTML = '<span style="font-size:2.5rem">📰</span>'; }} />
           : <span className="text-5xl">📰</span>}
       </div>
@@ -195,8 +213,7 @@ function NewsCard({ article, index }) {
 function EscrowStep({ icon, num, text, delay }) {
   const [ref, vis] = useInView();
   return (
-    <div ref={ref} className={`text-center transition-all duration-700 ${vis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-         style={{ transitionDelay: `${delay}ms` }}>
+    <div ref={ref} className="text-center" style={fadeUp(vis, delay)}>
       <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-lg shadow-amber-200">
         {icon}
       </div>
@@ -210,30 +227,27 @@ function EscrowStep({ icon, num, text, delay }) {
 export default function Home() {
   const { t } = useTranslation();
 
-  const [amount, setAmount]     = useState(1);
-  const [from, setFrom]         = useState('USD');
-  const [to, setTo]             = useState('IQD');
+  const [amount, setAmount]       = useState(1);
+  const [from, setFrom]           = useState('USD');
+  const [to, setTo]               = useState('IQD');
   const [converted, setConverted] = useState(null);
-  const [rates, setRates]       = useState(null);
-  const [news, setNews]         = useState(null);
+  const [rates, setRates]         = useState(null);
+  const [news, setNews]           = useState(null);
 
   useEffect(() => {
-  if (!amount || Number(amount) <= 0) return;
+    fetch(`${API_URL}/api/currency`)
+      .then(r => r.json())
+      .then(d => setRates(d.rates))
+      .catch(console.error);
+  }, []);
 
-  fetch(`${API_URL}/api/convert?from=${from}&to=${to}&amount=${amount}`)
-    .then((r) => {
-      if (!r.ok) throw new Error("Failed to convert currency");
-      return r.json();
-    })
-    .then((data) => {
-      console.log("Converted data:", data);
-      setConverted(data);
-    })
-    .catch((err) => {
-      console.error("Convert fetch error:", err);
-      setConverted(null);
-    });
-}, [amount, from, to]);
+  useEffect(() => {
+    if (!amount || Number(amount) <= 0) return;
+    fetch(`${API_URL}/api/convert?from=${from}&to=${to}&amount=${amount}`)
+      .then(r => { if (!r.ok) throw new Error('Failed'); return r.json(); })
+      .then(setConverted)
+      .catch(err => { console.error(err); setConverted(null); });
+  }, [amount, from, to]);
 
   useEffect(() => {
     setNews([
@@ -243,8 +257,8 @@ export default function Home() {
     ]);
   }, []);
 
-  const [aboutRef, aboutVis]   = useInView();
-  const [convRef,  convVis]    = useInView();
+  const [aboutRef, aboutVis] = useInView();
+  const [convRef,  convVis]  = useInView();
 
   return (
     <div className="bg-white text-slate-900 font-sans overflow-x-hidden">
@@ -264,8 +278,8 @@ export default function Home() {
       <section id="about-us" className="py-28 bg-white">
         <div ref={aboutRef} className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
 
-          {/* text */}
-          <div className={`transition-all duration-700 ${aboutVis ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
+          {/* text — slides in from left */}
+          <div style={fadeLeft(aboutVis)}>
             <Tag color="gold">About Us</Tag>
             <h2 className="text-5xl font-black leading-tight mt-4 mb-5 tracking-tight">{t('aboutUs')}</h2>
             <p className="text-slate-500 leading-8 text-[17px]">{t('aboutText')}</p>
@@ -281,8 +295,8 @@ export default function Home() {
             </div>
           </div>
 
-          {/* stat card */}
-          <div className={`transition-all duration-700 delay-200 ${aboutVis ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
+          {/* stat card — slides in from right */}
+          <div style={fadeRight(aboutVis, 200)}>
             <div className="relative overflow-hidden bg-gradient-to-br from-amber-400 via-yellow-400 to-amber-500 rounded-3xl p-10 text-black shadow-2xl shadow-amber-200">
               <div className="absolute -top-8 -right-8 w-40 h-40 bg-white/10 rounded-full" />
               <div className="absolute -bottom-10 -left-6 w-32 h-32 bg-black/10 rounded-full" />
@@ -291,6 +305,7 @@ export default function Home() {
               <p className="relative text-black/50 text-sm mt-1">Trusted exchange &amp; transfer service</p>
             </div>
           </div>
+
         </div>
       </section>
 
@@ -304,7 +319,6 @@ export default function Home() {
             </div>
             <p className="text-white/25 text-xs font-mono">{t('liveRatesComparedUsd')}</p>
           </div>
-
           <div className="grid sm:grid-cols-3 gap-4">
             <LiveRateCard name={t('iraqiDinar')}     code="IQD" flag="🇮🇶" rate={rates?.IQD} />
             <LiveRateCard name={t('canadianDollar')} code="CAD" flag="🇨🇦" rate={rates?.CAD} />
@@ -320,11 +334,10 @@ export default function Home() {
           <h2 className="text-5xl font-black mt-4 mb-16 max-w-md leading-tight tracking-tight">
             Why clients choose us.
           </h2>
-
           <div className="grid md:grid-cols-3 gap-10">
-            <TrustPillar num={1} icon="✅" title={t('trustedOffice')} body={t('trustedOfficeText')} />
-            <TrustPillar num={2} icon="💱" title={t('fairRates')}    body={t('fairRatesText')}    />
-            <TrustPillar num={3} icon="🔒" title={t('secureService')} body={t('secureServiceText')} />
+            <TrustPillar num={1} icon="✅" title={t('trustedOffice')}  body={t('trustedOfficeText')}  />
+            <TrustPillar num={2} icon="💱" title={t('fairRates')}      body={t('fairRatesText')}      />
+            <TrustPillar num={3} icon="🔒" title={t('secureService')}  body={t('secureServiceText')}  />
           </div>
         </div>
       </section>
@@ -332,13 +345,14 @@ export default function Home() {
       {/* ── Converter ── */}
       <section id="currency-converter" className="py-28 bg-gradient-to-b from-[#050816] to-[#0d1f63]">
         <div className="max-w-3xl mx-auto px-6">
-          <div ref={convRef} className={`text-center mb-12 transition-all duration-700 ${convVis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+
+          <div ref={convRef} className="text-center mb-12" style={fadeUp(convVis)}>
             <Tag color="gold">Live Exchange</Tag>
             <h1 className="text-5xl font-black text-white mt-4 mb-2 tracking-tight">{t('currencyConverter')}</h1>
             <p className="text-white/40 text-sm">{t('converterSubtitle')}</p>
           </div>
 
-          <div className={`bg-white rounded-3xl shadow-2xl p-8 transition-all duration-700 delay-200 ${convVis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="bg-white rounded-3xl shadow-2xl p-8" style={fadeUp(convVis, 200)}>
             <div className="grid sm:grid-cols-3 gap-3">
               {[
                 { label: 'Amount', content: (
@@ -418,7 +432,6 @@ export default function Home() {
                 </p>
               </div>
             </div>
-
             <div className="relative rounded-3xl overflow-hidden shadow-2xl">
               <img src="/escort.png" alt="Escrow Service" className="w-full h-[350px] object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
@@ -483,7 +496,6 @@ export default function Home() {
 
       <Footer />
 
-      {/* ── Global styles ── */}
       <style>{`
         @keyframes ticker {
           0%   { transform: translateX(0); }
