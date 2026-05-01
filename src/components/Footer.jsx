@@ -70,7 +70,7 @@ function Footer() {
           </p>
 
           <a
-            href="https://maps.app.goo.gl/V4AfU11hBuXRSAJt9"
+            href="https://maps.app.goo.gl/pKEPZW9hZ8eAs4JA7?g_st=ic"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-yellow-500 hover:bg-yellow-600 text-black px-5 py-2 rounded-lg font-semibold transition"
