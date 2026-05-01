@@ -34,7 +34,6 @@ function Navbar() {
         <nav className="hidden lg:flex items-center gap-6 text-sm font-medium text-black">
           <a href="#home">{t('home')}</a>
           <a href="#currency-converter">{t('currencyConverter')}</a>
-          <a href="#gold-price">{t('goldPrice')}</a>
           <a href="#economy-news">{t('economyNews')}</a>
           <a href="#about-us">{t('aboutUs')}</a>
           <a href="#inquiry-form">{t('inquiry')}</a>
