@@ -82,7 +82,7 @@ const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
               <p className="text-gray-400 text-xs uppercase tracking-widest">
                 Phone
               </p>
-              <p className="text-slate-800 font-bold">+964 152 44 85</p>
+              <p className="text-slate-800 font-bold">+٩٦٤٧٧٠١٥٢٧٧٥٦</p>
             </div>
           </div>
 
