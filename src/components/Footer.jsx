@@ -15,7 +15,7 @@ function Footer() {
         {/* COMPANY */}
         <div>
           <h3 className="text-xl font-bold mb-4">
-            Shabakt Naqdia
+            Shabaka Naqdia
           </h3>
 
           <p className="text-gray-300 leading-7">
@@ -49,7 +49,7 @@ function Footer() {
             <p>
               📧 {t('email')}: 
               <span dir="ltr" className="inline-block mx-2 [unicode-bidi:isolate]">
-                mr.ameer.mirza984@gmail.com
+                info@shabakanaqdiya.com
               </span>
             </p>
 
