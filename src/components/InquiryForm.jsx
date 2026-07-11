@@ -95,7 +95,7 @@ const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
                 Email
               </p>
               <p className="text-slate-800 font-bold">
-                mr.ameer.mirza984@gmail.com
+                info@shabakanaqdiya.com
               </p>
             </div>
           </div>
