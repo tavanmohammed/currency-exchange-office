@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { FaWhatsapp } from "react-icons/fa";
 
 function Footer() {
   const { t, i18n } = useTranslation();
@@ -32,9 +33,12 @@ function Footer() {
           <div className="space-y-2 text-gray-300">
            
 
-        <p>
-  📞 {t('phone')}:
-  <bdi className="inline-block mx-2" dir="ltr">
+  <p className="flex items-center gap-2">
+  <FaWhatsapp className="text-green-500 text-xl" />
+
+  {t('phone')}:
+
+  <bdi className="inline-block" dir="ltr">
     <a
       href={`https://wa.me/${t('phone1').replace(/\D/g, '')}`}
       target="_blank"
