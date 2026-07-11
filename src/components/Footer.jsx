@@ -32,10 +32,17 @@ function Footer() {
           <div className="space-y-2 text-gray-300">
            
 
-            <p>
+        <p>
   📞 {t('phone')}:
   <bdi className="inline-block mx-2" dir="ltr">
-    {t('phone1')}
+    <a
+      href={`https://wa.me/${t('phone1').replace(/\D/g, '')}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-green-600 hover:underline"
+    >
+      {t('phone1')}
+    </a>
   </bdi>
 </p>
 
